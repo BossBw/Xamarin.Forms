@@ -277,10 +277,12 @@ namespace Xamarin.Forms
 		{
 			if (!s_defaultColorInitialized)
 			{
-				var themeTextColorValue = new TypedValue();
-				context.Theme.ResolveAttribute(Resource.Attribute.TextColor, themeTextColorValue, true);
-				s_defaultThemeTextColor = new global::Android.Graphics.Color(themeTextColorValue.Data);
-				s_defaultColorInitialized = true;
+				using (var themeTextColorValue = new TypedValue())
+				{
+					context.Theme.ResolveAttribute(Resource.Attribute.TextColor, themeTextColorValue, true);
+					s_defaultThemeTextColor = new global::Android.Graphics.Color(themeTextColorValue.Data);
+					s_defaultColorInitialized = true;
+				}
 			}
 
 			return s_defaultThemeTextColor;
