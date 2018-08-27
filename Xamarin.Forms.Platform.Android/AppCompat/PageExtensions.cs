@@ -9,7 +9,7 @@ namespace Xamarin.Forms.Platform.Android
 	public static class PageExtensions
 	{
 #pragma warning disable 618
-		[Obsolete("This extension method is obsolete as of version 3.2. Next versions of Xamarin.Forms will return a support fragment type.")]
+		[Obsolete("ContentPage.CreateFragment() is obsolete as of version 3.2. Please use ContentPage.CreateSupportFragment() instead.")]
 		public static Fragment CreateFragment(this ContentPage view, Context context)
 		{
 			if (!Forms.IsInitialized)
