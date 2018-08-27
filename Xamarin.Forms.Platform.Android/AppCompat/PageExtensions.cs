@@ -8,9 +8,24 @@ namespace Xamarin.Forms.Platform.Android
 {
 	public static class PageExtensions
 	{
-		public static global::Android.Support.V4.App.Fragment CreateFragment(this ContentPage view, Context context)
+#pragma warning disable 618
+		public static Fragment CreateFragment(this ContentPage view, Context context)
 		{
-			return CreateSupportFragment(view, context);
+			if (!Forms.IsInitialized)
+				throw new InvalidOperationException("call Forms.Init() before this");
+
+			if (!(view.RealParent is Application))
+			{
+				Application app = new DefaultApplication();
+				app.MainPage = view;
+			}
+
+			var platform = new Platform(context, true);
+			platform.SetPage(view);
+
+			var vg = platform.GetViewGroup();
+
+			return new EmbeddedFragment(vg, platform);
 		}
 
 		public static global::Android.Support.V4.App.Fragment CreateSupportFragment(this ContentPage view, Context context)
@@ -31,6 +46,47 @@ namespace Xamarin.Forms.Platform.Android
 
 			return new EmbeddedSupportFragment(vg, platform);
 		}
+
+		class EmbeddedFragment : Fragment
+		{
+			readonly ViewGroup _content;
+			readonly Platform _platform;
+			bool _disposed;
+
+			// ReSharper disable once UnusedMember.Local (Android uses this on configuration change
+			public EmbeddedFragment()
+			{
+			}
+
+			public EmbeddedFragment(ViewGroup content, Platform platform)
+			{
+				_content = content;
+				_platform = platform;
+			}
+
+			public override global::Android.Views.View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+			{
+				return _content;
+			}
+
+			protected override void Dispose(bool disposing)
+			{
+				if (_disposed)
+				{
+					return;
+				}
+
+				_disposed = true;
+
+				if (disposing)
+				{
+					(_platform as IDisposable)?.Dispose();
+				}
+
+				base.Dispose(disposing);
+			}
+		}
+#pragma warning restore 618
 
 		class DefaultApplication : Application
 		{
