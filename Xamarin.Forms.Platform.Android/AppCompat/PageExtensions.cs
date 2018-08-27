@@ -8,6 +8,11 @@ namespace Xamarin.Forms.Platform.Android
 {
 	public static class PageExtensions
 	{
+		public static global::Android.Support.V4.App.Fragment CreateFragment(this ContentPage view, Context context)
+		{
+			return CreateSupportFragment(view, context);
+		}
+
 		public static global::Android.Support.V4.App.Fragment CreateSupportFragment(this ContentPage view, Context context)
 		{
 			if (!Forms.IsInitialized)
