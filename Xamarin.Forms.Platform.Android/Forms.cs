@@ -30,8 +30,6 @@ namespace Xamarin.Forms
 
 		static bool? s_isLollipopOrNewer;
 
-		static global::Android.Graphics.Color s_defaultThemeTextColor = global::Android.Graphics.Color.Black;
-	
 		[Obsolete("Context is obsolete as of version 2.5. Please use a local context instead.")]
 		public static Context Context { get; internal set; }
 
