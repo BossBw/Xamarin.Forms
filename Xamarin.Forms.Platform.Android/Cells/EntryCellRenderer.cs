@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using Android.Content;
-using Android.Support.V4.Content;
 using Android.Text;
 using Android.Text.Method;
 using Android.Views;
